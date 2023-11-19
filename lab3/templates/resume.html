@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Резюме</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+  {% extends 'base.html' %}
+
+  {% block title %}Резюме{% endblock %}
+
+  {% block content %}
+  <div class="container">
+    <div class="wrapper">
+      <h2>Моє Резюме</h2>
+      <p>Тут моє резюме зі всіма навичками</p>
+    </div>
+    <table>
+      <tr>
+        <th>Компанія</th>
+        <th>Досвід роботи</th>
+        <th>Посада</th>
+      </tr>
+      {% for res in resume %}
+      <tr>
+        <td class="td_resume">{{ res.company }}</td>
+        <td class="td_resume">{{ res.experience }}</td>
+        <td class="td_resume">{{ res.role }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+
+  </div>
+
+  {% endblock %}
+</body>
+
+</html>
