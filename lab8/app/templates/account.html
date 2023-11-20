@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Мій профіль{% endblock %}
+
+{% block content %}
+<div style="align-items:center ;" class="container">
+    <h1 style="padding: 20px; text-align: center;" class="namesH">Мій профіль</h1>
+    <div style="justify-content: center; align-items: center; display: flex; flex-direction: column; column-gap: 15px; row-gap: 15px; background-color: var(--bg_color-2); padding: 25px;">
+        <img style="width: 350px; margin-left: auto; margin-right: auto; height: 350px; border-radius: 25px;" src="{{current_user.image_file}}" alt="" srcset="">
+        <p>Name: {{ current_user.username }}</p>
+        <p>email: {{ current_user.email }}</p>
+        <p><a style="color: var(--red);" href="info">Змінити пароль</a></p>
+    </div>
+</div>
+{% include 'footer.html' %}
+{% endblock %}
