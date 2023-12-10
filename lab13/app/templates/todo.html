@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block title %}Список Todo{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="todo_add">
+        <h1 class="namesH">Добавить новое дело</h1>
+        <hr>
+        <form id="addTodoForm">
+            <input type="text" id="todoItemInput" placeholder="Todo Item" class="inputs"> <br>
+            <input type="text" id="descriptionInput" placeholder="Description" class="inputs"> <br>
+            <label for="status">Status:</label>
+            <input type="checkbox" id="statusCheckbox" class="inputs"> <br>
+            <button type="button" onclick="createTodo()" class="btn_submit">Submit</button>
+        </form>
+
+        <hr>
+        <h1 class="namesH">Список Todo</h1>
+        <hr>
+        <table id="todoTable" class="todo_table">
+            <tr class="todo_list_title">
+                <th>No.</th>
+                <th>Todo_Item</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        
+        </table>
+    </div>
+</div>
+
+<script>
+    function createTodo() {
+        let todoItem = document.getElementById("todoItemInput").value;
+        let description = document.getElementById("descriptionInput").value;
+        let status = document.getElementById("statusCheckbox").checked;
+
+        fetch('/api/todos', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                todo_item: todoItem,
+                description: description,
+                status: status,
+            }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            location.reload();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+
+
+    window.onload = function() {
+        fetch('/api/todos')
+        .then(response => response.json())
+        .then(data => {
+            let todoTable = document.getElementById('todoTable');
+            data.todos.forEach(todo => {
+                let row = document.createElement('tr');
+                row.classList.add('todo_list_obj'); 
+                row.innerHTML = `<td>${todo.id}</td>
+                                 <td>${todo.todo_item}</td>
+                                 <td>${todo.status ? 'Done' : 'Not Done'}</td>
+                                 <td>
+                                    <a id="submit_a" href="/todo/edit/${todo.id}">Edit</a>
+                                    <button onclick="deleteTodo(${todo.id})" class="btn-link">Delete</button>
+                                 </td>`;
+                todoTable.appendChild(row);
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+
+    function deleteTodo(todoId) {
+        fetch(`/api/todos/${todoId}`, {
+            method: 'DELETE',
+        })
+        .then(response => response.json())
+        .then(data => {
+            location.reload();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+</script>
+
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block title %}Редактирование Todo{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="todo_edit">
+        <h1>Редактирование Todo</h1>
+        <form id="editTodoForm">
+            <input type="text" id="todoItemInput" placeholder="Todo Item" class="inputs"> <br>
+            <input type="text" id="descriptionInput" placeholder="Description" class="inputs"> <br>
+            <label for="status">Status:</label>
+            <input type="checkbox" id="statusCheckbox" class="inputs"> <br><br>
+            <button type="button" onclick="updateTodo()" class="btn_submit">Save</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    window.onload = function() {
+        const url = window.location.href;
+        const todoId = url.substring(url.lastIndexOf('/') + 1);
+
+        fetch(`/api/todos/${todoId}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Todo not found');
+            }
+            return response.json();
+        })
+        .then(data => {
+            document.getElementById('todoItemInput').value = data.todo_item;
+            document.getElementById('descriptionInput').value = data.description;
+            document.getElementById('statusCheckbox').checked = data.status;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            window.location.href = '/404';
+        });
+    }
+
+    function updateTodo() {
+        const url = window.location.href;
+        const todoId = url.substring(url.lastIndexOf('/') + 1);
+
+        let todoItem = document.getElementById("todoItemInput").value;
+        let description = document.getElementById("descriptionInput").value;
+        let status = document.getElementById("statusCheckbox").checked;
+
+        fetch(`/api/todos/${todoId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                todo_item: todoItem,
+                description: description,
+                status: status,
+            }),
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Todo not found');
+            }
+            return response.json();
+        })
+        .then(data => {
+            window.location.href = '/todo';
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            window.location.href = '/404';
+        });
+    }
+</script>
+
+{% endblock %}
