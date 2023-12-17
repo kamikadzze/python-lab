@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}відгуки{% endblock %}
+
+{% block content %}
+<div class="container center_center">
+    <h1>Форма відгуків</h1>
+
+    <form id="reviews_form" method="post">
+        {{ form.hidden_tag() }}
+
+        {{ form.name.label(for=form.name.id) }}
+        {{ form.name(size=32, id="name_iput_feed") }}
+
+        {{ form.email.label(for=form.email.id) }}
+        {{ form.email(size=32, id="email_iput_feed") }}
+
+        {{ form.message.label(for=form.message.id) }}
+        {{ form.message(cols=40, rows=10, id="msg_iput_feed") }}
+        <p>{{ form.submit(id="submit_iput_feed") }}</p>
+    </form>
+
+
+    <h2>Отримані відгуки:</h2>
+    <ul id="ul_reviews">
+        {% for entry in feedbacks %}
+        <li>{{ entry.name }}: {{ entry.message }}</li>
+        {% endfor %}
+    </ul>
+
+</div>
+{% include 'footer.html' %}
+{% endblock %}
