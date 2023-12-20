@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Список постів{% endblock %}
+
+{% block content %}
+<div class="container" style="align-items: center; flex-direction: wrap;">
+    <div class="posts-view" style="justify-content: center; flex-direction: column; align-items: center; display: flex;">
+        <a href="{{ url_for('post_bp.create_post') }}" style="width: 200px; margin: 15px;" class="a_but btn btn-primary add-posts">Додати пост</a>
+        <div class="row" style="display: flex; justify-content: center; flex-wrap: wrap;">
+            {% for post in posts %}
+                <div class="col-md-3 mb-3" style="background-color: var(--bg_color-2); padding: 25px; margin: 15px;">
+                    <div class="card" style="display: flex; flex-direction: column; justify-content: center;">
+                        <img src="{{ url_for('static', filename='images/posts/' + post.image) }}" alt="Post Image" class="card-img-top">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ post.title }}</h5>
+                            <p class="card-text">{{ post.types.value }} - {{ "Enabled" if post.enabled else "Disabled" }}</p>
+                            <a class="a_but" href="{{ url_for('post_bp.view_post', id=post.id) }}" class="btn btn-primary">Переглянути</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% include 'footer.html' %}
+{% endblock %}
