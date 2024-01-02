@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}Мій профіль{% endblock %}
+
+{% block content %}
+{% if current_user.is_authenticated %}
+<div style="align-items:center ;" class="container">
+    <h1 style="padding: 20px; text-align: center;" class="namesH">Мій профіль</h1>
+    <div
+        style="justify-content: center; align-items: center; display: flex; flex-direction: column; column-gap: 15px; row-gap: 15px; background-color: var(--bg_color-2); padding: 25px;">
+        <h2>Оновлення профілю</h2>
+        <form method="post" action="{{ url_for('auth.account_edit') }}" novalidate enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            {{ form.picture.label }}
+            {{ form.picture(class="inputs") }} <br>
+            {{ form.username.label }}
+            {{ form.username(class="inputs") }} <br>
+            {{ form.email.label }}
+            {{ form.email(class="inputs") }} <br>
+            {{ form.about_me.label }}
+            {{ form.about_me(class="inputs") }} <br>
+            {{ form.submit(class="btn_submit") }}
+        </form>
+        {% if current_user.last_seen %}
+        <p class="account_text">Last Seen: {{ current_user.last_seen }}</p>
+        {% endif %}
+        <h2>Change Password:</h2>
+        <form method="post" action="/change_password">
+            <input type="submit" value="Change">
+        </form>
+    </div>
+</div>
+{% else %}
+<p>Доступ заборонено. Будь ласка, увійдіть в свій акаунт.</p>
+{% endif %}
+{% include 'footer.html' %}
+{% endblock %}

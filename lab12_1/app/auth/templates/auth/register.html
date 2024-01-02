@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div id="gen_box_login">
+        <form method="POST" class="register_form" novalidate>
+            <h1 class="register_text">Register</h1>
+            {{ form.csrf_token }}
+            {{ render_field(form.username, class="input_username") }}
+            {{ render_field(form.email, class="input_email") }}
+            {{ render_field(form.password, class="input_password") }}
+            {{ render_field(form.confirm_password, class="input_password") }} <br>
+            <hr><br>
+            {{ form.submit(class="btn_submit") }}
+            <p class="small_text">Already have an account?
+                <br>
+                <a class="small_text" href="{{ url_for('auth.login') }}">Login here</a>
+            </p>
+        </form>
+    </div>
+</div>
+
+{% include 'footer.html' %}
+{% endblock %}
+
+{% macro render_field(field, class='') %}
+<div>
+    <dt>{{ field.label }}</dt>
+    {% if field.errors %}
+    <dd>
+        {{ field(class=class) }}
+        <ul>
+            {% for error in field.errors %}
+            <li style="color: var(--red);" class="list-group-item list-group-item-danger">{{ error }}</li>
+            {% endfor %}
+        </ul>
+    </dd>
+    {% else %}
+    <dd>{{ field(class=class) }}</dd>
+    {% endif %}
+</div>
+{% endmacro %}
