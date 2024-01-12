@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+<div class="container">
+    {% block title %}Users{% endblock %}
+
+    {% block content %}
+    <div class="users_table">
+        <h1>Зареєстровані користувачі</h1>
+
+        {% if total_users > 0 %}
+        <p>Загальна кількість користувачів на сайті: {{ total_users }}</p>
+
+        <ul class="users_box">
+            {% for user in users %}
+            <li><img style="width: 100px;height: 100px; margin-left: auto; margin-right: auto; border-radius: 10%;" src="{{ url_for('static', filename='images/avatars/' + user.image_file) }}"> <br>Name: {{ user.username }} <br> Email: ({{ user.email }})</li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>На сайті немає зареєстрованих користувачів.</p>
+        {% endif %}
+    </div>
+</div>
+
+{% include 'footer.html' %}
+{% endblock %}

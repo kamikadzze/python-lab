@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}Перегляд поста{% endblock %}
+
+{% block content %}
+<div class="container" style="justify-content: center; align-items: center; ">
+    <div class="row">
+        <div class="col"></div>
+        <div class="" style="justify-content: center; display: flex; align-items: center; flex-direction: column; background-color: var(--bg_color-2); padding: 25px;">
+            <h1>{{ post.title }}</h1>
+            <img src="{{ url_for('static', filename='images/posts/' + post.image) }}" alt="Post Image" class="post-image">
+            <p>Type: {{ post.types.value }}</p>
+            <p>Text: {{ post.text }}</p>
+            <p>Created: {{ post.created }}</p>
+            
+            {% if current_user.is_authenticated and current_user.id == post.user_id %}
+               
+                <form method="POST" action="{{ url_for('post_bp.delete_post', id=post.id) }}">
+                    <a class="a_but" href="{{ url_for('post_bp.update_post', id=post.id) }} " class="btn btn-primary">Edit</a>
+                    <button class="a_but" type="submit" class="btn btn-primary">Delete</button>
+                </form>
+            {% endif %}
+        </div>
+        <div class="col"></div>
+    </div>
+</div>
+{% include 'footer.html' %}
+{% endblock %}
