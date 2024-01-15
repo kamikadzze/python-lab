@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Портфоліо{% endblock %}
+
+{% block content %}
+<div class="container">
+    <section class="main-content">
+        <h2>Привіт, я Олег!</h2>
+        <p>Тут має бути текст про мене, але для цього прикладу вистачить цього</p>
+        <img src="{{ url_for('static', filename='images/my_image.jpg') }}" alt="My Image">
+    </section>
+</div>
+{% block footer %}
+{% include 'footer.html' %}
+
+{% endblock %}
+
+{% endblock %}
